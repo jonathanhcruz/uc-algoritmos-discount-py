@@ -2,11 +2,11 @@ def descEstrato(consumo, estrato):
     descuento = 0;
 
     if estrato == 1:
-        descuento = consumo * 0.15
+        descuento = consumo * 0.2
     elif estrato == 2:
-        descuento = consumo * 0.10
+        descuento = consumo * 0.15
     elif estrato == 3:
-        descuento = consumo * 0.05
+        descuento = consumo * 0.9
   
     return descuento
 
@@ -14,19 +14,19 @@ def descIntegrantes(consumo, cantidadDeIntegrantes):
     descuento = 0;
 
     if cantidadDeIntegrantes >= 5:
-        descuento = consumo * 0.3
-    elif cantidadDeIntegrantes == 4:
         descuento = consumo * 0.2
-    elif cantidadDeIntegrantes == 1:
+    elif cantidadDeIntegrantes >= 4:
+        descuento = consumo * 0.15
+    elif cantidadDeIntegrantes >= 3:
         descuento = consumo * 0.1
     
     return descuento
         
 
-def descuentos(consumoDeAgua, estrato, cantidadDeIntegrantes):
-    resDescEstrato = descEstrato(consumoDeAgua, estrato);
-    resDescIntegrantes = descIntegrantes(consumoDeAgua, cantidadDeIntegrantes);
-    return consumoDeAgua - (resDescEstrato + resDescIntegrantes);
+def descuentos(consumo, estrato, cantidadDeIntegrantes):
+    resDescEstrato = descEstrato(consumo, estrato);
+    resDescIntegrantes = descIntegrantes(consumo, cantidadDeIntegrantes);
+    return resDescEstrato + resDescIntegrantes;
 
 
 def main():
@@ -39,17 +39,29 @@ def main():
         cantidadDeIntegrantes = int(input("Ingrese la cantidad de integrantes de la familia: "))
         estrato = int(input("Ingrese el estrato de la familia: "))
         consumoDeAgua = int(input("Ingrese el consumo de agua de la familia: "))
-        descuento = descuentos(consumoDeAgua, estrato, cantidadDeIntegrantes);
-
+        consumoDeLuz = int(input("Ingrese el consumo de luz de la familia: "))
+        descuentoAgua = descuentos(consumoDeAgua, estrato, cantidadDeIntegrantes);
+        descuentoLuz = descuentos(consumoDeLuz, estrato, cantidadDeIntegrantes);
         
 
         listaFamilias.append({
             "nombreDeFamilia": nombreDeFamilia,
             "cantidadDeIntegrantes": cantidadDeIntegrantes, 
             "estrato": estrato, 
-            "consumoDeAgua": consumoDeAgua,
-            "descuento": descuento
-        });      
+            "consumoDeAgua": {
+                "consumo": consumoDeAgua,
+                "descuento": descuentoAgua,
+                "total": (consumoDeAgua - descuentoAgua)
+            },
+            "consumoDeLuz": {
+                "consumo": consumoDeLuz,
+                "descuento": descuentoLuz,
+                "total": (consumoDeLuz - descuentoLuz)
+            }
+
+        });
+
+    print("Familias: ", listaFamilias)   
         
         
 
